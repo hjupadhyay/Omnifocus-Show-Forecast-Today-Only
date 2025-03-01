@@ -1,0 +1,32 @@
+/*{
+    "type": "action",
+    "targets": ["omnifocus"],
+    "author": "Neo Yogi",
+    "identifier": "com.omni-automation.of.show-forecast-today-only",
+    "version": "1.1",
+    "description": "Selects today only in the forecast day",
+    "label": "Show Forecast Today Only",
+    "shortLabel": "Forecast Today Only"
+}*/
+(() => {
+    var action = new PlugIn.Action(function(selection, sender){
+        var win = document.windows[0]
+        win.perspective = Perspective.BuiltIn.Forecast
+        
+        var today = Calendar.current.startOfDay(new Date())
+        foreCastToday = win.forecastDayForDate(today)
+        
+        var nowYesterday = new Date()
+        nowYesterday.setDate(nowYesterday.getDate() - 1)
+        var yesterday = Calendar.current.startOfDay(nowYesterday)
+        foreCastPastDue = win.forecastDayForDate(yesterday)
+
+        win.selectForecastDays([foreCastToday])
+    });
+
+    action.validate = function(selection, sender){
+        return true
+    };
+    
+    return action;
+})();
